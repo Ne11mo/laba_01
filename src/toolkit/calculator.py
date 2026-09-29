@@ -75,6 +75,7 @@ def validate_expression(tokens):
 
         if tokens[index_token] not in AVAILABLE_SYMBOLS:
             raise InvalidCharacterError("В выражении есть недопустимый символ")
+
         if index_token != 0:
             if is_number(tokens[index_token - 1]) and is_number(tokens[index_token]):
                 raise EmptyOperandError("Пропущен операнд")
