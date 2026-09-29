@@ -12,3 +12,6 @@ class InvalidCharacterError(CalculatorErrors):
 
 class DivisionByZeroError(CalculatorErrors):
     pass
+
+class EmptyExpressionError(CalculatorErrors):
+    pass

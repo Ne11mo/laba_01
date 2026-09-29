@@ -3,11 +3,17 @@ from src.toolkit.errors import (
     InvalidExpressionError,
     InvalidCharacterError,
     BracketsError,
+    EmptyExpressionError,
     DivisionByZeroError
 )
 from constans import AVAILABLE_SYMBOLS, INVALID_COMBINATIONS
 
 def validate_expression(expression):
+    expression = expression.strip().replace(' ', '')
+
+    if expression == '':
+        raise EmptyExpressionError
+
     brackets = 0
     for symbol in expression:
         if symbol == '(':
