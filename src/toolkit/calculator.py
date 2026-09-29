@@ -4,9 +4,10 @@ from src.toolkit.errors import (
     InvalidCharacterError,
     BracketsError,
     EmptyExpressionError,
+    UnaryOperatorError,
     DivisionByZeroError
 )
-from constans import AVAILABLE_SYMBOLS, INVALID_COMBINATIONS
+from constans import AVAILABLE_SYMBOLS, INVALID_COMBINATIONS, BINARY_OPERATORS, UNARY_OPERATORS
 
 def validate_expression(expression):
     expression = expression.strip().replace(' ', '')
@@ -47,7 +48,32 @@ def tokenization(expression):
     if current_num != '':
         tokens.append(current_num)
 
-    return tokens
+    return recognize_unary_operators(tokens)
+
+
+def recognize_unary_operators(tokens):
+    final_tokens = []
+    count_minus = 0
+    is_series = False
+
+    for token in tokens:
+        is_need_to_symplify = is_series or len(final_tokens) == 0 or final_tokens[-1] in BINARY_OPERATORS or final_tokens[-1] == '('
+        if (token == '+' or token == '-') and is_need_to_symplify:
+            is_series = True
+            if token == '-':
+                count_minus += 1
+            continue
+
+        if is_series:
+            final_tokens.append('$' if count_minus % 2 == 1 else '@')
+            is_series = False
+            count_minus = 0
+        final_tokens.append(token)
+
+    if is_series:
+        raise UnaryOperatorError("Неправильно расставлены унарные знаки")
+
+    return final_tokens
 
 
 def start_calculator(expression):
