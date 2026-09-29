@@ -57,8 +57,8 @@ def recognize_unary_operators(tokens):
     is_series = False
 
     for token in tokens:
-        is_need_to_symplify = is_series or len(final_tokens) == 0 or final_tokens[-1] in BINARY_OPERATORS or final_tokens[-1] == '('
-        if (token == '+' or token == '-') and is_need_to_symplify:
+        is_need_to_simplify = is_series or len(final_tokens) == 0 or final_tokens[-1] in BINARY_OPERATORS or final_tokens[-1] == '('
+        if (token == '+' or token == '-') and is_need_to_simplify:
             is_series = True
             if token == '-':
                 count_minus += 1
