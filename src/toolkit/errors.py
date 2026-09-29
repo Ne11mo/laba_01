@@ -18,3 +18,6 @@ class DivisionByZeroError(CalculatorErrors):
 
 class EmptyExpressionError(CalculatorErrors):
     pass
+
+class EmptyOperandError(CalculatorErrors):
+    pass
