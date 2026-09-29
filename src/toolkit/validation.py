@@ -60,7 +60,7 @@ def validate_expression(tokens, expression):
                 raise EmptyOperandError("Пропущен операнд")
             if tokens[index_token-1] in BINARY_OPERATORS and tokens[index_token] in BINARY_OPERATORS:
                 raise DoubleBinaryOperandError("Два бинарных операнда подряд")
-            if (tokens[index_token - 1] in BINARY_OPERATORS or tokens[index_token] in UNARY_OPERATORS) and tokens[index_token] == ')':
+            if (tokens[index_token - 1] in BINARY_OPERATORS or tokens[index_token - 1] in UNARY_OPERATORS) and tokens[index_token] == ')':
                 raise InvalidExpressionError("Неправильно расставлены операнды")
 
     if brackets != 0:
