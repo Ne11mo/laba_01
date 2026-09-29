@@ -1,14 +1,18 @@
 [project]
 name = "lab-01"
-version = "0.1.0"
+version = "1.0.0"
 description = ""
 authors = [
     {name = "nemo",email = "nikgovoruhin@gmail.com"}
 ]
-package-mode = false
 readme = "README.md"
 requires-python = "^3.14"
 dependencies = [
+]
+
+[tool.poetry]
+packages = [
+    { include = "toolkit", from = "src" }
 ]
 
 

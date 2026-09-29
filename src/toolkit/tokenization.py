@@ -1,3 +1,5 @@
+from .constans import BINARY_OPERATORS
+
 def tokenization(expression):
     tokens = []
     expression = expression.strip()
