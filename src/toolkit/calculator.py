@@ -1,38 +1,23 @@
-from constans import AVAILABLE_SYMBOLS, INVALID_COMBINATIONS, BINARY_OPERATORS
+from constans import AVAILABLE_SYMBOLS, INVALID_COMBINATIONS, BINARY_OPERATORS, UNARY_OPERATORS
 from src.toolkit.errors import (
     CalculatorErrors,
     InvalidExpressionError,
     InvalidCharacterError,
     BracketsError,
     EmptyExpressionError,
-    UnaryOperatorError
+    UnaryOperatorError,
+    EmptyOperandError,
+    DoubleBinaryOperandError
 )
 
-def validate_expression(expression):
-    expression = expression.strip().replace(' ', '')
-
-    if expression == '':
-        raise EmptyExpressionError
-
-    brackets = 0
-    for symbol in expression:
-        if symbol == '(':
-            brackets += 1
-        elif symbol == ')':
-            brackets -= 1
-            if brackets < 0:
-                raise BracketsError("Закрывающая скобка без открывающей")
-        elif symbol not in AVAILABLE_SYMBOLS:
-            raise InvalidCharacterError("В выражении есть недопустимый символ")
-
-    for i in INVALID_COMBINATIONS:
-        if i in expression:
-            raise InvalidExpressionError("В выражении есть два бинарных операнда подряд")
-
+def is_number(token):
+    if token[0] in '0123456789':
+        return True
+    return False
 
 def tokenization(expression):
     tokens = []
-    expression = expression.strip().replace(' ', '')
+    expression = expression.strip()
     expression = expression.replace('//', '!') # распознавание целочисленного деления
 
     current_num = ''
@@ -41,7 +26,8 @@ def tokenization(expression):
             if current_num != '':
                 tokens.append(current_num)
                 current_num = ''
-            tokens.append(symbol)
+            if symbol != ' ':
+                tokens.append(symbol)
         else:
             current_num += symbol
     if current_num != '':
@@ -69,16 +55,42 @@ def recognize_unary_operators(tokens):
             count_minus = 0
         final_tokens.append(token)
 
-    if is_series:
-        raise UnaryOperatorError("Неправильно расставлены унарные знаки")
-
     return final_tokens
+
+
+def validate_expression(tokens):
+    if len(tokens) == 0:
+        raise EmptyExpressionError("Пустая строка")
+    if len(tokens) == 1:
+        raise InvalidExpressionError("Некорректное выражение")
+
+    brackets = 0
+    for index_token in range(len(tokens)):
+        if tokens[index_token] == '(':
+            brackets += 1
+        elif tokens[index_token] == ')':
+            brackets -= 1
+            if brackets < 0:
+                raise BracketsError("Закрывающая скобка без открывающей")
+
+        if tokens[index_token] not in AVAILABLE_SYMBOLS:
+            raise InvalidCharacterError("В выражении есть недопустимый символ")
+        if index_token != 0:
+            if is_number(tokens[index_token - 1]) and is_number(tokens[index_token]):
+                raise EmptyOperandError("Пропущен операнд")
+            if tokens[index_token-1] in BINARY_OPERATORS and tokens[index_token] in BINARY_OPERATORS:
+                raise DoubleBinaryOperandError("Два бинарных операнда подряд")
+            if (tokens[index_token - 1] in BINARY_OPERATORS or tokens[index_token] in UNARY_OPERATORS) and tokens[index_token] == ')':
+                raise InvalidExpressionError("Неправильно расставлены операнды")
+
+    if tokens[-1] in BINARY_OPERATORS or tokens[-1] in UNARY_OPERATORS:
+        raise InvalidExpressionError("Неправильно расставлены операнды")
 
 
 def start_calculator(expression):
     try:
-        validate_expression(expression)
         tokens = tokenization(expression)
+        validate_expression(tokens)
 
         postfix_expression = convert_to_postfix_notation(tokens)
         result = calculate(postfix_expression)

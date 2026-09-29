@@ -18,4 +18,4 @@ INVALID_COMBINATIONS.append('.-')
 INVALID_COMBINATIONS.append(',-')
 
 UNARY_OPERATORS = ['@', '$']
-BINARY_OPERATORS = ['+', '-', '*', '/']
+BINARY_OPERATORS = ['+', '-', '*', '/', '%', '!']

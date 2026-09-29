@@ -21,3 +21,6 @@ class EmptyExpressionError(CalculatorErrors):
 
 class EmptyOperandError(CalculatorErrors):
     pass
+
+class DoubleBinaryOperandError(CalculatorErrors):
+    pass
