@@ -1,13 +1,12 @@
+from constans import AVAILABLE_SYMBOLS, INVALID_COMBINATIONS, BINARY_OPERATORS
 from src.toolkit.errors import (
     CalculatorErrors,
     InvalidExpressionError,
     InvalidCharacterError,
     BracketsError,
     EmptyExpressionError,
-    UnaryOperatorError,
-    DivisionByZeroError
+    UnaryOperatorError
 )
-from constans import AVAILABLE_SYMBOLS, INVALID_COMBINATIONS, BINARY_OPERATORS, UNARY_OPERATORS
 
 def validate_expression(expression):
     expression = expression.strip().replace(' ', '')
