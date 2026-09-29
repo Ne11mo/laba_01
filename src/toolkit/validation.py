@@ -63,5 +63,8 @@ def validate_expression(tokens, expression):
             if (tokens[index_token - 1] in BINARY_OPERATORS or tokens[index_token] in UNARY_OPERATORS) and tokens[index_token] == ')':
                 raise InvalidExpressionError("Неправильно расставлены операнды")
 
+    if brackets != 0:
+        raise BracketsError("Неверно расставлены скобки")
+
     if tokens[-1] in BINARY_OPERATORS or tokens[-1] in UNARY_OPERATORS:
         raise InvalidExpressionError("Неправильно расставлены операнды")
