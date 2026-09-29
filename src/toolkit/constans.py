@@ -5,7 +5,7 @@ HELP_MESSAGE = """\
  -Input \"stop\" to stop the program
 """
 
-AVAILABLE_SYMBOLS = ['+', '-', '*', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '%', '.', ',']
+AVAILABLE_SYMBOLS = ['+', '-', '*', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '%', '.', ',', '@', '$']
 INVALID_COMBINATIONS = []
 for i in '+-*%.,/':
     for j in '*%.,/':
@@ -16,3 +16,6 @@ INVALID_COMBINATIONS.append('.+')
 INVALID_COMBINATIONS.append(',+')
 INVALID_COMBINATIONS.append('.-')
 INVALID_COMBINATIONS.append(',-')
+
+UNARY_OPERATORS = ['@', '$']
+BINARY_OPERATORS = ['+', '-', '*', '/']
