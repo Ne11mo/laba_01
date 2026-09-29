@@ -10,7 +10,7 @@ from .errors import (
 )
 
 def is_number(token):
-    if token[0] in '0123456789':
+    if token != '' and token[0].isdigit():
         return True
     return False
 
@@ -22,6 +22,8 @@ def check_on_invalid_symbols(expression):
 
 
 def check_on_invalid_number(token):
+    if token == '':
+        raise InvalidNumberError("В выражении есть неправильная запись числа")
     if token[0] == ',' or token[0] == '.':
         raise InvalidNumberError("В выражении есть неправильная запись числа")
     if token.count(',') + token.count('.') > 1:
@@ -29,44 +31,63 @@ def check_on_invalid_number(token):
     if token[-1] == ',' or token[-1] == '.':
         raise InvalidNumberError("В выражении есть неправильная запись числа")
 
-    for index_digit in range(len(token)):
-        if token[index_digit] == '.' or token[index_digit] == ',':
-            if token[index_digit-1] in '0123456789.,' and token[index_digit+1] in '0123456789.,':
-                raise InvalidNumberError("В выражении есть неправильная запись числа")
-
     return True
 
 
 def validate_expression(tokens, expression):
     if len(tokens) == 0:
         raise EmptyExpressionError("Пустая строка")
-    if len(tokens) == 1 and check_on_invalid_number(tokens[0]):
-        raise InvalidExpressionError("Некорректное выражение")
 
     check_on_invalid_symbols(expression)
 
     brackets = 0
+    expect_operand = True #ожидание операнда
+
     for index_token in range(len(tokens)):
-        if tokens[index_token] == '(':
+        if tokens[index_token] in BINARY_OPERATORS:
+            if expect_operand:
+                if index_token != 0 and tokens[index_token - 1] in BINARY_OPERATORS:
+                    raise DoubleBinaryOperandError("Два бинарных оператора подряд")
+
+                raise InvalidExpressionError("Неправильно расставлены операнды")
+
+            expect_operand = True
+
+        elif tokens[index_token] in UNARY_OPERATORS:
+            if (not expect_operand) and index_token != 0 and tokens[index_token - 1] in UNARY_OPERATORS:
+                raise InvalidExpressionError("Неправильно расставлены операнды")
+            expect_operand = True
+
+        elif tokens[index_token] == '(':
+            if not expect_operand:
+                raise InvalidExpressionError("Пропущен бинарный оператор")
+
             brackets += 1
+            expect_operand = True
+
         elif tokens[index_token] == ')':
             brackets -= 1
             if brackets < 0:
-                raise BracketsError("Закрывающая скобка без открывающей")
+                raise BracketsError("Нельзя закрывающую скобку без открывающей")
+            if expect_operand:
+                raise InvalidExpressionError("Неправильно расставлены операнды")
 
-        if tokens[index_token] not in BINARY_OPERATORS and tokens[index_token] not in UNARY_OPERATORS and tokens[index_token] not in ')(':
+            expect_operand = False
+
+        else:
             check_on_invalid_number(tokens[index_token])
 
-        if index_token != 0:
-            if is_number(tokens[index_token - 1]) and is_number(tokens[index_token]):
-                raise EmptyOperandError("Пропущен операнд")
-            if tokens[index_token-1] in BINARY_OPERATORS and tokens[index_token] in BINARY_OPERATORS:
-                raise DoubleBinaryOperandError("Два бинарных операнда подряд")
-            if (tokens[index_token - 1] in BINARY_OPERATORS or tokens[index_token - 1] in UNARY_OPERATORS) and tokens[index_token] == ')':
-                raise InvalidExpressionError("Неправильно расставлены операнды")
+            if not expect_operand:
+                if index_token != 0 and is_number([index_token - 1]):
+                    raise EmptyOperandError("Пропущен операнд")
+                raise InvalidExpressionError("Пропущен бинарный оператор")
+
+            expect_operand = False
+
+
 
     if brackets != 0:
         raise BracketsError("Неверно расставлены скобки")
 
-    if tokens[-1] in BINARY_OPERATORS or tokens[-1] in UNARY_OPERATORS:
+    if expect_operand:
         raise InvalidExpressionError("Неправильно расставлены операнды")

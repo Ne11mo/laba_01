@@ -40,4 +40,7 @@ def recognize_unary_operators(tokens):
             count_minus = 0
         final_tokens.append(token)
 
+    if len(final_tokens) == 0 and is_series:
+        final_tokens.append('$' if count_minus % 2 == 1 else '@')
+
     return final_tokens
