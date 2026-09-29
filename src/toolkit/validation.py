@@ -54,13 +54,15 @@ def validate_expression(tokens, expression):
             expect_operand = True
 
         elif tokens[index_token] in UNARY_OPERATORS:
-            if (not expect_operand) and index_token != 0 and tokens[index_token - 1] in UNARY_OPERATORS:
+            if not expect_operand:
                 raise InvalidExpressionError("Неправильно расставлены операнды")
             expect_operand = True
 
         elif tokens[index_token] == '(':
             if not expect_operand:
                 raise InvalidExpressionError("Пропущен бинарный оператор")
+            if index_token != 0 and tokens[index_token - 1] in UNARY_OPERATORS:
+                raise InvalidExpressionError("ошибка в выражении")
 
             brackets += 1
             expect_operand = True
@@ -78,7 +80,7 @@ def validate_expression(tokens, expression):
             check_on_invalid_number(tokens[index_token])
 
             if not expect_operand:
-                if index_token != 0 and is_number([index_token - 1]):
+                if index_token != 0 and is_number(tokens[index_token - 1]):
                     raise EmptyOperandError("Пропущен операнд")
                 raise InvalidExpressionError("Пропущен бинарный оператор")
 
