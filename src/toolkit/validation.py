@@ -34,6 +34,8 @@ def check_on_invalid_number(token):
             if token[index_digit-1] in '0123456789.,' and token[index_digit+1] in '0123456789.,':
                 raise InvalidNumberError("В выражении есть неправильная запись числа")
 
+    return True
+
 
 def validate_expression(tokens, expression):
     if len(tokens) == 0:
