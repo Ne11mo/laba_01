@@ -10,6 +10,9 @@ class BracketsError(CalculatorErrors):
 class InvalidCharacterError(CalculatorErrors):
     pass
 
+class UnaryOperatorError(CalculatorErrors):
+    pass
+
 class DivisionByZeroError(CalculatorErrors):
     pass
 
