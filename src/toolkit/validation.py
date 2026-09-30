@@ -86,8 +86,6 @@ def validate_expression(tokens, expression):
 
             expect_operand = False
 
-
-
     if brackets != 0:
         raise BracketsError("Неверно расставлены скобки")
 
