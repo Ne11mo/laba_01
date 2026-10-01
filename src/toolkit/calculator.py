@@ -1,16 +1,16 @@
 from .constans import UNARY_OPERATORS
 from .validation import validate_expression
 from .tokenization import tokenization
-from .errors import CalculatorErrors
+from .errors import CalculatorErrors, DivisionByZeroError
 from .validation import is_number
 
 def rating_operation(operation):
     if operation in '+-':
-        return 1
+        return 0
     elif operation in '*/!%':
-        return 2
+        return 1
     elif operation in '@$':
-        return 3
+        return 2
     return -1
 
 
@@ -22,6 +22,8 @@ def do_binary_operation(first_number, second_number, operation):
     elif operation == '*':
         return first_number * second_number
     elif operation == '/':
+        if second_number == 0:
+            raise DivisionByZeroError("Деление на ноль")
         return first_number / second_number
     elif operation == '%':
         return first_number % second_number
@@ -84,6 +86,7 @@ def calculate(postfix_notation):
 
     return stack_for_calculate[0]
 
+
 def start_calculator(expression):
     try:
         tokens = tokenization(expression)
@@ -92,7 +95,7 @@ def start_calculator(expression):
         postfix_expression = convert_to_postfix_notation(tokens)
         result = calculate(postfix_expression)
 
-        print(f'Результат: {result}')
-    # различные ошибки, выбрасываемые программой (доделать)
+        return result
+    # различные ошибки, выбрасываемые калькулятором
     except CalculatorErrors as e:
-        print(f'Ошибка: {e}')
+        return e

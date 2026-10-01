@@ -18,10 +18,10 @@ def tokenization(expression):
     if current_num != '':
         tokens.append(current_num)
 
-    return recognize_unary_operators(tokens)
+    return recognize_unary_operators_for_finally_tokens(tokens)
 
 
-def recognize_unary_operators(tokens):
+def recognize_unary_operators_for_finally_tokens(tokens):
     final_tokens = []
     count_minus = 0
     is_series = False

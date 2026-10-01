@@ -24,3 +24,15 @@ class DoubleBinaryOperandError(CalculatorErrors):
 
 class InvalidNumberError(CalculatorErrors):
     pass
+
+class ConverterErrors(Exception):
+    """Базовая ошибка конвертера"""
+
+class InvalidUnitError(ConverterErrors):
+    pass
+
+class DifferentUnitsError(ConverterErrors):
+    pass
+
+class UnderAbsoluteZeroTemperatureError(ConverterErrors):
+    pass

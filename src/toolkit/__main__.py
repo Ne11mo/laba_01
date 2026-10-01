@@ -1,5 +1,8 @@
 import argparse
-from src.toolkit.calculator import start_calculator
+
+from .calculator import start_calculator
+from .converter import start_converter
+from .errors import CalculatorErrors, ConverterErrors
 
 
 def create_parsers():
@@ -24,11 +27,18 @@ def main():
     args = parser.parse_args()
 
     if args.command == 'calc':
-        start_calculator(args.expression) # запуск калькулятора
+        try:
+            result = start_calculator(args.expression) # запуск калькулятора
+            print(f'Результат {result}')
+        except CalculatorErrors as e:
+            print(f'Ошибка: {e}')
 
     elif args.command == 'convert':
-        start_converter() # запуск конвертера
-
+        try:
+            result = start_converter(args.value, args.unit_from, args.unit_to) # запуск конвертера
+            print(f'Результат {result}')
+        except ConverterErrors as e:
+            print(f'Ошибка: {e}')
 
 if __name__ == '__main__':
     main()
