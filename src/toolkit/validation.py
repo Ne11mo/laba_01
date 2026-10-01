@@ -1,9 +1,9 @@
 from .constants import AVAILABLE_SYMBOLS, BINARY_OPERATORS, UNARY_OPERATORS
 from .errors import (
     BracketsError,
-    DoubleBinaryOperandError,
+    DoubleBinaryOperationError,
     EmptyExpressionError,
-    EmptyOperandError,
+    EmptyOperationError,
     InvalidCharacterError,
     InvalidExpressionError,
     InvalidNumberError,
@@ -46,7 +46,7 @@ def validate_expression(tokens, expression):
         if tokens[index_token] in BINARY_OPERATORS:
             if expect_operand:
                 if index_token != 0 and tokens[index_token - 1] in BINARY_OPERATORS:
-                    raise DoubleBinaryOperandError("Два бинарных оператора подряд")
+                    raise DoubleBinaryOperationError("Два бинарных оператора подряд")
 
                 raise InvalidExpressionError("Неправильно расставлены операнды")
 
@@ -60,8 +60,6 @@ def validate_expression(tokens, expression):
         elif tokens[index_token] == "(":
             if not expect_operand:
                 raise InvalidExpressionError("Пропущен бинарный оператор")
-            if index_token != 0 and tokens[index_token - 1] in UNARY_OPERATORS:
-                raise InvalidExpressionError("ошибка в выражении")
 
             brackets += 1
             expect_operand = True
@@ -80,7 +78,7 @@ def validate_expression(tokens, expression):
 
             if not expect_operand:
                 if index_token != 0 and is_number(tokens[index_token - 1]):
-                    raise EmptyOperandError("Пропущен операнд")
+                    raise EmptyOperationError("Пропущен операнд")
                 raise InvalidExpressionError("Пропущен бинарный оператор")
 
             expect_operand = False

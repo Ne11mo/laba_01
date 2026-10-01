@@ -22,11 +22,11 @@ class EmptyExpressionError(CalculatorErrors):
     pass
 
 
-class EmptyOperandError(CalculatorErrors):
+class EmptyOperationError(CalculatorErrors):
     pass
 
 
-class DoubleBinaryOperandError(CalculatorErrors):
+class DoubleBinaryOperationError(CalculatorErrors):
     pass
 
 
