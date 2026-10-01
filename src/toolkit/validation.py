@@ -23,11 +23,11 @@ def check_on_invalid_symbols(expression):
 def check_on_invalid_number(token):
     if token == "":
         raise InvalidNumberError("В выражении есть неправильная запись числа")
-    if token[0] == "," or token[0] == ".":
+    if token[0] == ".":
         raise InvalidNumberError("В выражении есть неправильная запись числа")
-    if token.count(",") + token.count(".") > 1:
+    if token.count(".") > 1:
         raise InvalidNumberError("В выражении есть неправильная запись числа")
-    if token[-1] == "," or token[-1] == ".":
+    if token[-1] == ".":
         raise InvalidNumberError("В выражении есть неправильная запись числа")
 
     return True
