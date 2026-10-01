@@ -1,14 +1,15 @@
-from .constans import BINARY_OPERATORS
+from .constants import BINARY_OPERATORS
 
 
 def tokenization(expression):
     tokens = []
     expression = expression.strip()
     expression = expression.replace("//", "!")  # распознавание целочисленного деления
+    expression = expression.replace(",", ".")
 
     current_num = ""
     for symbol in expression:
-        if symbol not in "0123456789.,":
+        if symbol not in "0123456789.":
             if current_num != "":
                 tokens.append(current_num)
                 current_num = ""

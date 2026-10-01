@@ -1,4 +1,4 @@
-from .constans import UNARY_OPERATORS
+from .constants import UNARY_OPERATORS
 from .errors import CalculatorErrors, DivisionByZeroError
 from .tokenization import tokenization
 from .validation import is_number, validate_expression

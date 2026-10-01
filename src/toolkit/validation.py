@@ -1,4 +1,4 @@
-from .constans import AVAILABLE_SYMBOLS, BINARY_OPERATORS, UNARY_OPERATORS
+from .constants import AVAILABLE_SYMBOLS, BINARY_OPERATORS, UNARY_OPERATORS
 from .errors import (
     BracketsError,
     DoubleBinaryOperandError,

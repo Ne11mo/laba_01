@@ -1,4 +1,4 @@
-from .constans import AVAILABLE_UNITS, DISTANCE_UNITS, TEMPERATURE_UNITS, WEIGHT_UNITS
+from .constants import AVAILABLE_UNITS, DISTANCE_UNITS, TEMPERATURE_UNITS, WEIGHT_UNITS
 from .errors import (
     ConverterErrors,
     DifferentUnitsError,
@@ -23,7 +23,7 @@ def validate_units(value, unit_from, unit_to):
 
     if (
         unit_from in TEMPERATURE_UNITS
-        and (unit_from == "K" and value < 0)
+        and (unit_from == "k" and value < 0)
         or (unit_from == "c" and value < -273.15)
         or (unit_from == "f" and value < -459.67)
     ):
