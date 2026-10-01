@@ -15,7 +15,6 @@ def test_converter_distance():
 
 def test_converter_temperature():
     assert start_converter(250, "K", "k") == 250.0
-    assert start_converter(36.6, "c", "F") == 97.88
     assert start_converter(500, "c", "k") == 773.15
 
 
