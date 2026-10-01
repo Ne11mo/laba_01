@@ -6,7 +6,7 @@ authors = [
     {name = "nemo",email = "nikgovoruhin@gmail.com"}
 ]
 readme = "README.md"
-requires-python = "^3.14"
+requires-python = ">=3.13"
 dependencies = [
 ]
 
@@ -19,3 +19,9 @@ packages = [
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+dev = [
+    "pre-commit (>=4.6.2,<5.0.0)",
+    "black (>=26.5.1,<27.0.0)",
+    "ruff (>=0.16.10,<0.17.0)"
+]

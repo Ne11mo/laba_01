@@ -1,57 +1,57 @@
 from .constans import UNARY_OPERATORS
-from .validation import validate_expression
-from .tokenization import tokenization
 from .errors import CalculatorErrors, DivisionByZeroError
-from .validation import is_number
+from .tokenization import tokenization
+from .validation import is_number, validate_expression
+
 
 def rating_operation(operation):
-    if operation in '+-':
+    if operation in "+-":
         return 0
-    elif operation in '*/!%':
+    elif operation in "*/!%":
         return 1
-    elif operation in '@$':
+    elif operation in "@$":
         return 2
     return -1
 
 
 def do_binary_operation(first_number, second_number, operation):
-    if operation == '+':
+    if operation == "+":
         return first_number + second_number
-    elif operation == '-':
+    elif operation == "-":
         return first_number - second_number
-    elif operation == '*':
+    elif operation == "*":
         return first_number * second_number
-    elif operation == '/':
+    elif operation == "/":
         if second_number == 0:
             raise DivisionByZeroError("Деление на ноль")
         return first_number / second_number
-    elif operation == '%':
+    elif operation == "%":
         return first_number % second_number
-    elif operation == '!':
+    elif operation == "!":
         return first_number // second_number
 
 
 def do_unary_operation(number, operation):
-    if operation == '$':
+    if operation == "$":
         return -number
     return number
 
 
 def convert_to_postfix_notation(tokens):
     postfix_notation = []
-    stack_for_convert = ['(']
+    stack_for_convert = ["("]
 
-    tokens.append(')')
+    tokens.append(")")
 
     for token in tokens:
         if is_number(token):
             postfix_notation.append(float(token))
-        elif token == ')':
-            while stack_for_convert[-1] != '(':
+        elif token == ")":
+            while stack_for_convert[-1] != "(":
                 postfix_notation.append(stack_for_convert[-1])
                 stack_for_convert.pop()
             stack_for_convert.pop()
-        elif token == '(':
+        elif token == "(":
             stack_for_convert.append(token)
         else:
             while rating_operation(stack_for_convert[-1]) >= rating_operation(token):
