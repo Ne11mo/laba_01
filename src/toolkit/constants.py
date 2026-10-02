@@ -28,3 +28,5 @@ AVAILABLE_UNITS = ["mm", "cm", "m", "km", "g", "kg", "c", "f", "k"]
 WEIGHT_UNITS = ["g", "kg"]
 DISTANCE_UNITS = ["mm", "cm", "m", "km"]
 TEMPERATURE_UNITS = ["c", "f", "k"]
+
+HISTORY_OF_SUCCESSFUL_COMPUTATIONS_FILE = "history.json"

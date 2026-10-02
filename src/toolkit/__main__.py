@@ -4,6 +4,10 @@ import sys
 from .calculator import start_calculator
 from .converter import start_converter
 from .errors import CalculatorErrors, ConverterErrors
+from .history import (
+    save_history_of_successful_calculation,
+    save_history_of_successful_conversion,
+)
 
 
 def create_parsers():
@@ -45,6 +49,10 @@ def main():
         try:
             result = start_calculator(args.expression)  # запуск калькулятора
 
+            save_history_of_successful_calculation(
+                args.command, args.expression, result
+            )
+
             print(f"Результат: {result}")
             sys.exit(0)
         except CalculatorErrors as e:
@@ -55,6 +63,10 @@ def main():
             result = start_converter(
                 args.value, args.unit_from, args.unit_to
             )  # запуск конвертера
+
+            save_history_of_successful_conversion(
+                args.command, args.value, args.unit_from, args.unit_to, result
+            )
 
             print(f"Результат: {result}")
             sys.exit(0)

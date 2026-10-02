@@ -1,0 +1,21 @@
+[
+    {
+        "command": "calc",
+        "input_data": "1 + 1",
+        "result": 2.0
+    },
+    {
+        "command": "convert",
+        "input_data": 20.0,
+        "unit_from": "cm",
+        "unit_to": "mm",
+        "result": 200.0
+    },
+    {
+        "command": "convert",
+        "input_data": 20.0,
+        "unit_from": "cm",
+        "unit_to": "mm",
+        "result": 200.0
+    }
+]
