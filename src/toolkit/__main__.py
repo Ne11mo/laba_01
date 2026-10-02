@@ -1,4 +1,5 @@
 import argparse
+import sys
 
 from .calculator import start_calculator
 from .converter import start_converter
@@ -43,18 +44,23 @@ def main():
     if args.command == "calc":
         try:
             result = start_calculator(args.expression)  # запуск калькулятора
-            print(f"Результат: {result}")
-        except CalculatorErrors as e:
-            print(f"Ошибка: {e}")
 
-    elif args.command == "convert":
+            print(f"Результат: {result}")
+            sys.exit(0)
+        except CalculatorErrors as e:
+            print(f"Ошибка: {e}", file=sys.stderr)
+            sys.exit(2)
+    else:
         try:
             result = start_converter(
                 args.value, args.unit_from, args.unit_to
             )  # запуск конвертера
+
             print(f"Результат: {result}")
+            sys.exit(0)
         except ConverterErrors as e:
-            print(f"Ошибка: {e}")
+            print(f"Ошибка: {e}", file=sys.stderr)
+            sys.exit(2)
 
 
 if __name__ == "__main__":
