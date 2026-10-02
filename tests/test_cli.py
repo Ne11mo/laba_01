@@ -1,7 +1,7 @@
 import subprocess
 
 
-def test_cli_calc():
+def test_cli_calc() -> None:
     result = subprocess.run(
         ["python", "-m", "toolkit", "calc", "2 + 2 * 2"],
         capture_output=True,
@@ -12,7 +12,7 @@ def test_cli_calc():
     assert "Результат: 6.0" in result.stdout
 
 
-def test_cli_converter():
+def test_cli_converter() -> None:
     result = subprocess.run(
         ["python", "-m", "toolkit", "convert", "36", "--from", "c", "--to", "F"],
         capture_output=True,
