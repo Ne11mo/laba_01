@@ -5,7 +5,7 @@ from .errors import DivisionByZeroError
 from .tokenization import tokenization
 from .validation import is_number, validate_expression
 
-getcontext().prec = 15  # установка точности
+getcontext().prec = 28  # установка точности
 
 
 def rating_operation(operation: str) -> int:

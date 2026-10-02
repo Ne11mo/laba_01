@@ -7,7 +7,7 @@ from .errors import (
     UnderAbsoluteZeroTemperatureError,
 )
 
-getcontext().prec = 15
+getcontext().prec = 28
 
 
 def validate_units(value: Decimal, unit_from: str, unit_to: str) -> None:

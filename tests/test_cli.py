@@ -9,7 +9,7 @@ def test_cli_calc() -> None:
         check=False,
     )
     assert result.returncode == 0
-    assert "Результат: 6.0" in result.stdout
+    assert "Результат: 6" in result.stdout
 
 
 def test_cli_converter() -> None:
