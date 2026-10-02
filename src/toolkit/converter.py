@@ -2,7 +2,6 @@ from decimal import ROUND_HALF_UP, Decimal, getcontext
 
 from .constants import AVAILABLE_UNITS, DISTANCE_UNITS, TEMPERATURE_UNITS, WEIGHT_UNITS
 from .errors import (
-    ConverterErrors,
     DifferentUnitsError,
     InvalidUnitError,
     UnderAbsoluteZeroTemperatureError,
@@ -11,7 +10,7 @@ from .errors import (
 getcontext().prec = 15
 
 
-def validate_units(value, unit_from, unit_to):
+def validate_units(value: Decimal, unit_from: str, unit_to: str) -> None:
     if (unit_from not in AVAILABLE_UNITS) or (unit_to not in AVAILABLE_UNITS):
         raise InvalidUnitError("Недопустимая единица")
 
@@ -36,7 +35,7 @@ def validate_units(value, unit_from, unit_to):
         )
 
 
-def convert_temperature_units(value, unit_from, unit_to):
+def convert_temperature_units(value: Decimal, unit_from: str, unit_to: str) -> Decimal:
     if unit_from == "c":
         if unit_to == "c":
             return value
@@ -60,7 +59,7 @@ def convert_temperature_units(value, unit_from, unit_to):
             return (value - Decimal("273.15")) * Decimal("1.8") + Decimal("32")
 
 
-def convert_distance_units(value, unit_from, unit_to):
+def convert_distance_units(value: Decimal, unit_from: str, unit_to: str) -> Decimal:
     result = value
     if unit_from == "mm" and unit_to != "mm":
         if unit_to == "cm":
@@ -95,7 +94,7 @@ def convert_distance_units(value, unit_from, unit_to):
     return result
 
 
-def convert_weight_units(value, unit_from, unit_to):
+def convert_weight_units(value: Decimal, unit_from: str, unit_to: str) -> Decimal:
     result = value
     if unit_from == "g" and unit_to == "kg":
         result = value / Decimal("1000.0")
@@ -106,19 +105,15 @@ def convert_weight_units(value, unit_from, unit_to):
     return result
 
 
-def start_converter(value, unit_from, unit_to):
-    try:
-        unit_from = unit_from.lower()
-        unit_to = unit_to.lower()
+def start_converter(value: Decimal, unit_from: str, unit_to: str) -> Decimal:
+    unit_from = unit_from.lower()
+    unit_to = unit_to.lower()
 
-        validate_units(value, unit_from, unit_to)
+    validate_units(value, unit_from, unit_to)
 
-        if unit_from in TEMPERATURE_UNITS:
-            return convert_temperature_units(value, unit_from, unit_to)
-        elif unit_from in DISTANCE_UNITS:
-            return convert_distance_units(value, unit_from, unit_to)
-        else:
-            return convert_weight_units(value, unit_from, unit_to)
-    # различные ошибки, выбрасываемые конвертером
-    except ConverterErrors as e:
-        return e
+    if unit_from in TEMPERATURE_UNITS:
+        return convert_temperature_units(value, unit_from, unit_to)
+    elif unit_from in DISTANCE_UNITS:
+        return convert_distance_units(value, unit_from, unit_to)
+    else:
+        return convert_weight_units(value, unit_from, unit_to)

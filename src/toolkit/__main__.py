@@ -42,7 +42,7 @@ def create_parsers() -> argparse.ArgumentParser:
     return parser
 
 
-def main():
+def main() -> None:
     parser = create_parsers()
     args = parser.parse_args()
 
@@ -66,7 +66,7 @@ def main():
             )  # запуск конвертера
 
             save_history_of_successful_conversion(
-                args.command, args.value, args.unit_from, args.unit_to, str(result)
+                args.command, str(args.value), args.unit_from, args.unit_to, str(result)
             )
 
             print(f"Результат: {result:f}")

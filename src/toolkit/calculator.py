@@ -1,14 +1,14 @@
 from decimal import ROUND_HALF_UP, Decimal, getcontext
 
 from .constants import UNARY_OPERATORS
-from .errors import CalculatorErrors, DivisionByZeroError
+from .errors import DivisionByZeroError
 from .tokenization import tokenization
 from .validation import is_number, validate_expression
 
 getcontext().prec = 15  # установка точности
 
 
-def rating_operation(operation):
+def rating_operation(operation: str) -> int:
     if operation in "+-":
         return 0
     elif operation in "*/!%":
@@ -18,7 +18,9 @@ def rating_operation(operation):
     return -1
 
 
-def do_binary_operation(first_number, second_number, operation):
+def do_binary_operation(
+    first_number: Decimal, second_number: Decimal, operation: str
+) -> Decimal:
     if operation == "+":
         return first_number + second_number
     elif operation == "-":
@@ -26,7 +28,7 @@ def do_binary_operation(first_number, second_number, operation):
     elif operation == "*":
         return first_number * second_number
     elif operation == "/":
-        if second_number == 0:
+        if second_number == Decimal("0"):
             raise DivisionByZeroError("Деление на ноль")
         return first_number / second_number
     elif operation == "%":
@@ -35,13 +37,13 @@ def do_binary_operation(first_number, second_number, operation):
         return first_number // second_number
 
 
-def do_unary_operation(number, operation):
+def do_unary_operation(number: Decimal, operation: str) -> Decimal:
     if operation == "$":
         return Decimal("-1") * number
     return number
 
 
-def convert_to_postfix_notation(tokens):
+def convert_to_postfix_notation(tokens: list) -> list:
     postfix_notation = []
     stack_for_convert = ["("]
 
@@ -67,7 +69,7 @@ def convert_to_postfix_notation(tokens):
     return postfix_notation
 
 
-def calculate(postfix_notation):
+def calculate(postfix_notation: list) -> Decimal:
     stack_for_calculate = []
     for token in postfix_notation:
         if isinstance(token, Decimal):
@@ -96,15 +98,11 @@ def calculate(postfix_notation):
     return result
 
 
-def start_calculator(expression):
-    try:
-        tokens = tokenization(expression)
-        validate_expression(tokens, expression)
+def start_calculator(expression: str) -> Decimal:
+    tokens = tokenization(expression)
+    validate_expression(tokens, expression)
 
-        postfix_expression = convert_to_postfix_notation(tokens)
-        result = calculate(postfix_expression)
+    postfix_expression = convert_to_postfix_notation(tokens)
+    result = calculate(postfix_expression)
 
-        return result
-    # различные ошибки, выбрасываемые калькулятором
-    except CalculatorErrors as e:
-        return e
+    return result

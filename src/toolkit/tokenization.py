@@ -1,7 +1,7 @@
 from .constants import BINARY_OPERATORS
 
 
-def tokenization(expression):
+def tokenization(expression: str) -> list:
     tokens = []
     expression = expression.strip()
     expression = expression.replace("//", "!")  # распознавание целочисленного деления
@@ -23,7 +23,8 @@ def tokenization(expression):
     return recognize_unary_operators_for_finally_tokens(tokens)
 
 
-def recognize_unary_operators_for_finally_tokens(tokens):
+def recognize_unary_operators_for_finally_tokens(tokens: list) -> list:
+    """Определение унарных знаков и формирование окончательного списка токенов"""
     final_tokens = []
     count_minus = 0
     is_series = False

@@ -4,7 +4,9 @@ import os
 from .constants import HISTORY_OF_SUCCESSFUL_COMPUTATIONS_FILE
 
 
-def save_history_of_successful_calculation(command, input_data, result):
+def save_history_of_successful_calculation(
+    command: str, input_data: str, result: str
+) -> None:
     calculation = {"command": command, "input_data": input_data, "result": result}
     history = []
 
@@ -24,8 +26,8 @@ def save_history_of_successful_calculation(command, input_data, result):
 
 
 def save_history_of_successful_conversion(
-    command, input_data, unit_from, unit_to, result
-):
+    command: str, input_data: str, unit_from: str, unit_to: str, result: str
+) -> None:
     conversion = {
         "command": command,
         "input_data": input_data,

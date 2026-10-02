@@ -10,17 +10,17 @@ from .errors import (
 )
 
 
-def is_number(token):
+def is_number(token: str) -> bool:
     return bool(token != "" and token[0].isdigit())
 
 
-def check_on_invalid_symbols(expression):
+def check_on_invalid_symbols(expression: str) -> None:
     for symbol in expression:
         if symbol not in AVAILABLE_SYMBOLS and symbol != " ":
             raise InvalidCharacterError(" В выражении присутствует недопустимый символ")
 
 
-def check_on_invalid_number(token):
+def check_on_invalid_number(token: str) -> bool:
     if token == "":
         raise InvalidNumberError("В выражении есть неправильная запись числа")
     if token[0] == ".":
@@ -33,7 +33,7 @@ def check_on_invalid_number(token):
     return True
 
 
-def validate_expression(tokens, expression):
+def validate_expression(tokens: list, expression: str) -> None:
     if len(tokens) == 0:
         raise EmptyExpressionError("Пустая строка")
 
