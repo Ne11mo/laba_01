@@ -43,7 +43,7 @@ def main():
     if args.command == "calc":
         try:
             result = start_calculator(args.expression)  # запуск калькулятора
-            print(f"Результат {result}")
+            print(f"Результат: {result}")
         except CalculatorErrors as e:
             print(f"Ошибка: {e}")
 
@@ -52,7 +52,7 @@ def main():
             result = start_converter(
                 args.value, args.unit_from, args.unit_to
             )  # запуск конвертера
-            print(f"Результат {result}")
+            print(f"Результат: {result}")
         except ConverterErrors as e:
             print(f"Ошибка: {e}")
 
