@@ -1,21 +1,41 @@
 [
     {
         "command": "calc",
-        "input_data": "1 + 1",
-        "result": 2.0
+        "input_data": "1 / 3",
+        "result": "0.3333333333"
+    },
+    {
+        "command": "calc",
+        "input_data": "1 / 2",
+        "result": "0.5"
     },
     {
         "command": "convert",
         "input_data": 20.0,
         "unit_from": "cm",
         "unit_to": "mm",
-        "result": 200.0
+        "result": "2E+2"
     },
     {
         "command": "convert",
         "input_data": 20.0,
         "unit_from": "cm",
         "unit_to": "mm",
-        "result": 200.0
+        "result": "2E+2"
+    },
+    {
+        "command": "calc",
+        "input_data": "1 / 2",
+        "result": "0.5"
+    },
+    {
+        "command": "calc",
+        "input_data": "1 / 3",
+        "result": "0.3333333333"
+    },
+    {
+        "command": "calc",
+        "input_data": "-1 * 3",
+        "result": "-3"
     }
 ]

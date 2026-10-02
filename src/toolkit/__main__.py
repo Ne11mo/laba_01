@@ -50,10 +50,10 @@ def main():
             result = start_calculator(args.expression)  # запуск калькулятора
 
             save_history_of_successful_calculation(
-                args.command, args.expression, result
+                args.command, args.expression, str(result)
             )
 
-            print(f"Результат: {result}")
+            print(f"Результат: {result:f}")
             sys.exit(0)
         except CalculatorErrors as e:
             print(f"Ошибка: {e}", file=sys.stderr)
@@ -65,10 +65,10 @@ def main():
             )  # запуск конвертера
 
             save_history_of_successful_conversion(
-                args.command, args.value, args.unit_from, args.unit_to, result
+                args.command, args.value, args.unit_from, args.unit_to, str(result)
             )
 
-            print(f"Результат: {result}")
+            print(f"Результат: {result:f}")
             sys.exit(0)
         except ConverterErrors as e:
             print(f"Ошибка: {e}", file=sys.stderr)

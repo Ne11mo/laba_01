@@ -1,3 +1,5 @@
+from decimal import ROUND_HALF_UP, Decimal, getcontext
+
 from .constants import AVAILABLE_UNITS, DISTANCE_UNITS, TEMPERATURE_UNITS, WEIGHT_UNITS
 from .errors import (
     ConverterErrors,
@@ -5,6 +7,8 @@ from .errors import (
     InvalidUnitError,
     UnderAbsoluteZeroTemperatureError,
 )
+
+getcontext().prec = 15
 
 
 def validate_units(value, unit_from, unit_to):
@@ -37,75 +41,69 @@ def convert_temperature_units(value, unit_from, unit_to):
         if unit_to == "c":
             return value
         elif unit_to == "f":
-            return value * 1.8 + 32
+            return value * Decimal("1.8") + Decimal("32")
         else:
-            return value + 273.15
+            return value + Decimal("273.15")
     elif unit_from == "f":
         if unit_to == "f":
             return value
         elif unit_to == "c":
-            return (value - 32) / 1.8
+            return (value - Decimal("32")) / Decimal("1.8")
         else:
-            return (value - 32) / 1.8 + 273.15
+            return (value - Decimal("32")) / Decimal("1.8") + Decimal("273.15")
     else:
         if unit_to == "k":
             return value
         elif unit_to == "c":
-            return value - 273.15
+            return value - Decimal("273.15")
         else:
-            return (value - 273.15) * 1.8 + 32
+            return (value - Decimal("273.15")) * Decimal("1.8") + Decimal("32")
 
 
 def convert_distance_units(value, unit_from, unit_to):
-    if unit_from == "mm":
-        if unit_to == "mm":
-            return value
-        elif unit_to == "cm":
-            return value / 10.0
-        elif unit_to == "m":
-            return value / 1000.0
-        else:
-            return value / 1000000.0
-    elif unit_from == "cm":
+    result = value
+    if unit_from == "mm" and unit_to != "mm":
         if unit_to == "cm":
-            return value
-        elif unit_to == "mm":
-            return value * 10.0
+            result = value / Decimal("10.0")
         elif unit_to == "m":
-            return value / 100.0
+            result = value / Decimal("1000.0")
         else:
-            return value / 100000.0
-    elif unit_from == "m":
-        if unit_to == "m":
-            return value
-        elif unit_to == "mm":
-            return value * 1000.0
+            result = value / Decimal("1000000.0")
+    elif unit_from == "cm" and unit_to != "cm":
+        if unit_to == "mm":
+            result = value * Decimal("10.0")
+        elif unit_to == "m":
+            result = value / Decimal("100.0")
+        else:
+            result = value / Decimal("100000.0")
+    elif unit_from == "m" and unit_to != "m":
+        if unit_to == "mm":
+            result = value * Decimal("1000.0")
         elif unit_to == "cm":
-            return value * 100.0
+            result = value * Decimal("100.0")
         else:
-            return value / 1000.0
-    else:
-        if unit_to == "km":
-            return value
-        elif unit_to == "mm":
-            return value * 1000000.0
+            result = value / Decimal("1000.0")
+    elif unit_from == "km" and unit_to != "km":
+        if unit_to == "mm":
+            result = value * Decimal("1000000.0")
         elif unit_to == "cm":
-            return value * 100000.0
+            result = value * Decimal("100000.0")
         else:
-            return value * 1000.0
+            result = value * Decimal("1000.0")
+
+    result = result.quantize(Decimal("0.0000000001"), ROUND_HALF_UP).normalize()
+    return result
 
 
 def convert_weight_units(value, unit_from, unit_to):
-    if unit_from == "g":
-        if unit_to == "g":
-            return value
-        else:
-            return value / 1000.0
-    else:
-        if unit_to == "kg":
-            return value
-        else:
-            return value * 1000.0
+    result = value
+    if unit_from == "g" and unit_to == "kg":
+        result = value / Decimal("1000.0")
+    elif unit_from == "kg" and unit_to == "g":
+        result = value * Decimal("1000.0")
+
+    result = result.quantize(Decimal("0.0000000001"), ROUND_HALF_UP).normalize()
+    return result
 
 
 def start_converter(value, unit_from, unit_to):
@@ -114,6 +112,8 @@ def start_converter(value, unit_from, unit_to):
         unit_to = unit_to.lower()
 
         validate_units(value, unit_from, unit_to)
+
+        value = Decimal(str(value))
 
         if unit_from in TEMPERATURE_UNITS:
             return convert_temperature_units(value, unit_from, unit_to)

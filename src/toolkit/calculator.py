@@ -1,7 +1,11 @@
+from decimal import ROUND_HALF_UP, Decimal, getcontext
+
 from .constants import UNARY_OPERATORS
 from .errors import CalculatorErrors, DivisionByZeroError
 from .tokenization import tokenization
 from .validation import is_number, validate_expression
+
+getcontext().prec = 15  # установка точности
 
 
 def rating_operation(operation):
@@ -33,7 +37,7 @@ def do_binary_operation(first_number, second_number, operation):
 
 def do_unary_operation(number, operation):
     if operation == "$":
-        return -number
+        return Decimal("-1") * number
     return number
 
 
@@ -45,7 +49,7 @@ def convert_to_postfix_notation(tokens):
 
     for token in tokens:
         if is_number(token):
-            postfix_notation.append(float(token))
+            postfix_notation.append(Decimal(token))
         elif token == ")":
             while stack_for_convert[-1] != "(":
                 postfix_notation.append(stack_for_convert[-1])
@@ -66,7 +70,7 @@ def convert_to_postfix_notation(tokens):
 def calculate(postfix_notation):
     stack_for_calculate = []
     for token in postfix_notation:
-        if is_number(str(token)):
+        if isinstance(token, Decimal):
             stack_for_calculate.append(token)
         else:
             if token in UNARY_OPERATORS:
@@ -84,7 +88,12 @@ def calculate(postfix_notation):
                 result = do_binary_operation(first_number, second_number, token)
                 stack_for_calculate.append(result)
 
-    return stack_for_calculate[0]
+    result = (
+        stack_for_calculate[0]
+        .quantize(Decimal("0.0000000001"), ROUND_HALF_UP)
+        .normalize()
+    )
+    return result
 
 
 def start_calculator(expression):
