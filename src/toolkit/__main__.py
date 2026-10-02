@@ -1,5 +1,6 @@
 import argparse
 import sys
+from decimal import Decimal
 
 from .calculator import start_calculator
 from .converter import start_converter
@@ -10,7 +11,7 @@ from .history import (
 )
 
 
-def create_parsers():
+def create_parsers() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m toolkit", description="toolkit"
     )  # создание главного парсера
@@ -29,7 +30,7 @@ def create_parsers():
     # создание парсера для конвертера
     parser_converter = subparser.add_parser("convert", help="Конвертация величин")
     parser_converter.add_argument(
-        "value", type=float, help="Исходное значение для конвертации"
+        "value", type=Decimal, help="Исходное значение для конвертации"
     )
     parser_converter.add_argument(
         "--from", dest="unit_from", type=str, help="Исходная единица"

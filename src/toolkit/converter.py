@@ -27,9 +27,9 @@ def validate_units(value, unit_from, unit_to):
 
     if (
         unit_from in TEMPERATURE_UNITS
-        and (unit_from == "k" and value < 0)
-        or (unit_from == "c" and value < -273.15)
-        or (unit_from == "f" and value < -459.67)
+        and (unit_from == "k" and value < Decimal("0"))
+        or (unit_from == "c" and value < Decimal("-273.15"))
+        or (unit_from == "f" and value < Decimal("-459.67"))
     ):
         raise UnderAbsoluteZeroTemperatureError(
             "Температура ниже абсолютного нуля запрещена"
@@ -112,8 +112,6 @@ def start_converter(value, unit_from, unit_to):
         unit_to = unit_to.lower()
 
         validate_units(value, unit_from, unit_to)
-
-        value = Decimal(str(value))
 
         if unit_from in TEMPERATURE_UNITS:
             return convert_temperature_units(value, unit_from, unit_to)
