@@ -9,6 +9,7 @@ getcontext().prec = 28  # установка точности
 
 
 def rating_operation(operation: str) -> int:
+    """Приоритет операций для алгоритма сортировочной станции дейкстры"""
     if operation in "+-":
         return 0
     elif operation in "*/!%":

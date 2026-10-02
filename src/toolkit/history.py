@@ -7,6 +7,7 @@ from .constants import HISTORY_OF_SUCCESSFUL_COMPUTATIONS_FILE
 def save_history_of_successful_calculation(
     command: str, input_data: str, result: str
 ) -> None:
+    """Сохранение истории успешных операций для калькулятора"""
     calculation = {"command": command, "input_data": input_data, "result": result}
     history = []
 
@@ -28,6 +29,7 @@ def save_history_of_successful_calculation(
 def save_history_of_successful_conversion(
     command: str, input_data: str, unit_from: str, unit_to: str, result: str
 ) -> None:
+    """Сохранение истории успешных операций для конвертера"""
     conversion = {
         "command": command,
         "input_data": input_data,
